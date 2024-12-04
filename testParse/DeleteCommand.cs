@@ -1,35 +1,35 @@
 ﻿namespace testParse
 {
-    public class DeleteCommand : ICommand
+    public class DeleteCommand: ICommand
     {
-        private TextEditor editor;
-        private int idx1, idx2;
-        private string deletedText;
+        private TextEditor _editor;
+        private int _idx1, _idx2;
+        private string _deletedText;
 
         public DeleteCommand(TextEditor editor, int idx1, int idx2)
         {
-            this.editor = editor;
-            this.idx1 = idx1;
-            this.idx2 = idx2;
+            this._editor = editor;
+            this._idx1 = idx1;
+            this._idx2 = idx2;
         }
 
         public void Execute()
         {
-            deletedText = editor.Text.Substring(idx1, idx2 - idx1);
-            editor.Text = editor.Text.Remove(idx1, idx2 - idx1);
-            Console.WriteLine($"Deleted: '{deletedText}'");
+            _deletedText = _editor.Text.Substring(_idx1, _idx2 - _idx1);
+            _editor.Delete(_idx1, _idx2);
+            Console.WriteLine($"Deleted: '{_deletedText}'");
         }
 
         public void Undo()
         {
-            editor.Text = editor.Text.Insert(idx1, deletedText);
+            _editor.Text = _editor.Text.Insert(_idx1, _deletedText);
             Console.WriteLine("Undo delete command");
         }
 
         public void Redo()
         {
-            Execute();
             Console.WriteLine("Redo delete command");
+            Execute();
         }
     }
 }

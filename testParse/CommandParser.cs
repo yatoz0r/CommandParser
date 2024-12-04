@@ -18,7 +18,7 @@
                         Console.WriteLine("Invalid indices for copy command.");
                         return null;
                     }
-                    return new CopyCommand(editor, copyIdx1, copyIdx2);
+                    return new CopyCommand(editor, copyIdx1 - 1, copyIdx2 - 1);
 
                 case "paste":
                     if (!int.TryParse(parts[1], out int pasteIdx))
@@ -26,7 +26,7 @@
                         Console.WriteLine("Invalid index for paste command.");
                         return null;
                     }
-                    return new PasteCommand(editor, pasteIdx);
+                    return new PasteCommand(editor, pasteIdx - 1);
 
                 case "insert":
                     string insertText = parts[1].Trim('"');
@@ -35,7 +35,7 @@
                         Console.WriteLine("Invalid index for insert command.");
                         return null;
                     }
-                    return new InsertCommand(editor, insertText, insertIdx);
+                    return new InsertCommand(editor, insertText, insertIdx - 1);
 
                 case "delete":
                     var deleteIndices = parts[1].Split(',');
@@ -46,13 +46,13 @@
                         Console.WriteLine("Invalid indices for delete command.");
                         return null;
                     }
-                    return new DeleteCommand(editor, deleteIdx1, deleteIdx2);
+                    return new DeleteCommand(editor, deleteIdx1 - 1, deleteIdx2 - 1);
 
                 case "undo":
-                    return null; // Предполагается, что у вас есть класс UndoCommand
+                    return new UndoCommand(); // Предполагается, что у вас есть класс UndoCommand
 
                 case "redo":
-                    return null; // Предполагается, что у вас есть класс RedoCommand
+                    return new RedoCommand(); // Предполагается, что у вас есть класс RedoCommand
 
                 default:
                     Console.WriteLine($"Unknown command: {commandType}");

@@ -15,21 +15,13 @@
 
         public void ExecuteCommand(ICommand command)
         {
-            if (command == null)
+            if(command is UndoCommand)
             {
-                // Обработка undo/redo
-                if (_undoStack.Count > 0)
-                {
-                    var lastCommand = _undoStack.Pop();
-                    lastCommand.Undo();
-                    _redoStack.Push(lastCommand);
-                }
-                else if (_redoStack.Count > 0)
-                {
-                    var commandToRedo = _redoStack.Pop();
-                    commandToRedo.Redo();
-                    _undoStack.Push(commandToRedo);
-                }
+                Undo();
+            }
+            else if (command is RedoCommand)
+            {
+                Redo();
             }
             else
             {
@@ -39,7 +31,27 @@
             }
             DisplayState();
         }
-        
+
+        public void Undo()
+        {
+            if (_undoStack.Count > 0)
+            {
+                var lastCommand = _undoStack.Pop();
+                lastCommand.Undo();
+                _redoStack.Push(lastCommand);
+            }
+        }
+
+        public void Redo()
+        {
+            if (_redoStack.Count > 0)
+            {
+                var commandToRedo = _redoStack.Pop();
+                commandToRedo.Redo();
+                _undoStack.Push(commandToRedo);
+            }
+        }
+
         public void DisplayState()
         {
             Console.WriteLine($"Current Text: {_editor.Text}");

@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace testParse
+﻿namespace testParse
 {
-    public class InsertCommand : ICommand
+    public class InsertCommand: ICommand
     {
-        private TextEditor editor;
-        private string text;
-        private int idx;
+        private TextEditor _editor;
+        private string _text;
+        private int _idx;
 
         public InsertCommand(TextEditor editor, string text, int idx)
         {
-            this.editor = editor;
-            this.text = text;
-            this.idx = idx;
+            this._editor = editor;
+            this._text = text;
+            this._idx = idx;
         }
 
         public void Execute()
         {
-            editor.Text = editor.Text.Insert(idx, text);
-            Console.WriteLine($"Inserted: '{text}' at index {idx}");
+            _editor.Insert(_idx, _text);
+            Console.WriteLine($"Inserted: '{_text}' at index {_idx}");
         }
 
         public void Undo()
         {
-            editor.Text = editor.Text.Remove(idx, text.Length);
-            Console.WriteLine($"Undo insert command: '{text}'");
+            _editor.Text = _editor.Text.Remove(_idx, _text.Length);
+            Console.WriteLine($"Undo insert command: '{_text}'");
         }
 
         public void Redo()
         {
-            Execute();
             Console.WriteLine("Redo insert command");
+            Execute();
         }
     }
 }
