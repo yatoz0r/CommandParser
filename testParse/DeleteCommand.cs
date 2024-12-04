@@ -25,5 +25,11 @@
             editor.Text = editor.Text.Insert(idx1, deletedText);
             Console.WriteLine("Undo delete command");
         }
+
+        public void Redo()
+        {
+            Execute();
+            Console.WriteLine("Redo delete command");
+        }
     }
 }

@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace testParse
+﻿namespace testParse
 {
-    using System.Collections.Generic;
-    using static System.Net.Mime.MediaTypeNames;
-
     public class CommandExecutor
     {
-        private Stack<ICommand> undoStack;
-        private Stack<ICommand> redoStack;
-        private TextEditor editor;
+        private Stack<ICommand> _undoStack;
+        private Stack<ICommand> _redoStack;
+        private TextEditor _editor;
 
         public CommandExecutor()
         {
-            undoStack = new Stack<ICommand>();
-            redoStack = new Stack<ICommand>();
-            editor = new TextEditor();
+            _undoStack = new Stack<ICommand>();
+            _redoStack = new Stack<ICommand>();
+            _editor = new TextEditor();
         }
 
         public void ExecuteCommand(ICommand command)
@@ -27,34 +18,34 @@ namespace testParse
             if (command == null)
             {
                 // Обработка undo/redo
-                if (undoStack.Count > 0)
+                if (_undoStack.Count > 0)
                 {
-                    var lastCommand = undoStack.Pop();
+                    var lastCommand = _undoStack.Pop();
                     lastCommand.Undo();
-                    redoStack.Push(lastCommand);
+                    _redoStack.Push(lastCommand);
                 }
-                else if (redoStack.Count > 0)
+                else if (_redoStack.Count > 0)
                 {
-                    var commandToRedo = redoStack.Pop();
-                    commandToRedo.Execute();
-                    undoStack.Push(commandToRedo);
+                    var commandToRedo = _redoStack.Pop();
+                    commandToRedo.Redo();
+                    _undoStack.Push(commandToRedo);
                 }
             }
             else
             {
                 command.Execute();
-                undoStack.Push(command);
-                redoStack.Clear();
+                _undoStack.Push(command);
+                _redoStack.Clear();
             }
             DisplayState();
         }
         
         public void DisplayState()
         {
-            Console.WriteLine($"Current Text: {editor.Text}");
-            Console.WriteLine($"Buffer: '{editor.Buffer}'");
-            Console.WriteLine($"Undo Stack Count: {undoStack.Count}");
-            Console.WriteLine($"Redo Stack Count: {redoStack.Count}");
+            Console.WriteLine($"Current Text: {_editor.Text}");
+            Console.WriteLine($"Buffer: '{_editor.Buffer}'");
+            Console.WriteLine($"Undo Stack Count: {_undoStack.Count}");
+            Console.WriteLine($"Redo Stack Count: {_redoStack.Count}");
             Console.WriteLine(new string('-', 40));
         }
         
@@ -62,19 +53,19 @@ namespace testParse
         {
             foreach (var line in commandLines)
             {
-                var command = CommandParser.ParseCommand(editor, line);
+                var command = CommandParser.ParseCommand(_editor, line);
                 ExecuteCommand(command);
             }
         }
 
         public void SetText(string text)
         {
-            editor.SetText(text);
+            _editor.SetText(text);
         }
 
         public string GetFinalText()
         {
-            return editor.Text;
+            return _editor.Text;
         }
     }
 }

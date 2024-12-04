@@ -32,5 +32,11 @@ namespace testParse
             editor.Buffer = string.Empty;
             Console.WriteLine("Undo copy command: buffer cleared.");
         }
+
+        public void Redo()
+        {
+            Execute();
+            Console.WriteLine("Redo copy command");
+        }
     }
 }

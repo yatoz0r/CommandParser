@@ -30,5 +30,11 @@ namespace testParse
             editor.Text = editor.Text.Remove(idx, text.Length);
             Console.WriteLine($"Undo insert command: '{text}'");
         }
+
+        public void Redo()
+        {
+            Execute();
+            Console.WriteLine("Redo insert command");
+        }
     }
 }

@@ -28,5 +28,11 @@ namespace testParse
             editor.Text = editor.Text.Remove(idx, editor.Buffer.Length);
             Console.WriteLine("Undo paste command");
         }
+
+        public void Redo()
+        {
+            Execute();
+            Console.WriteLine("Redo paste command");
+        }
     }
 }

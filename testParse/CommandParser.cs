@@ -7,53 +7,58 @@
             var parts = line.Trim().Split(' ');
             var commandType = parts[0];
 
-            if (commandType == "copy")
+            switch (commandType)
             {
-                var indices = parts[1].Split(',');
-                if (indices.Length != 2 || !int.TryParse(indices[0], out int idx1) || !int.TryParse(indices[1], out int idx2))
-                {
-                    throw new ArgumentException("Invalid indices for copy command.");
-                }
-                return new CopyCommand(editor, idx1, idx2);
+                case "copy":
+                    var copyIndices = parts[1].Split(',');
+                    if (copyIndices.Length != 2 ||
+                        !int.TryParse(copyIndices[0], out int copyIdx1) ||
+                        !int.TryParse(copyIndices[1], out int copyIdx2))
+                    {
+                        Console.WriteLine("Invalid indices for copy command.");
+                        return null;
+                    }
+                    return new CopyCommand(editor, copyIdx1, copyIdx2);
+
+                case "paste":
+                    if (!int.TryParse(parts[1], out int pasteIdx))
+                    {
+                        Console.WriteLine("Invalid index for paste command.");
+                        return null;
+                    }
+                    return new PasteCommand(editor, pasteIdx);
+
+                case "insert":
+                    string insertText = parts[1].Trim('"');
+                    if (parts.Length < 3 || !int.TryParse(parts[2], out int insertIdx))
+                    {
+                        Console.WriteLine("Invalid index for insert command.");
+                        return null;
+                    }
+                    return new InsertCommand(editor, insertText, insertIdx);
+
+                case "delete":
+                    var deleteIndices = parts[1].Split(',');
+                    if (deleteIndices.Length != 2 ||
+                        !int.TryParse(deleteIndices[0], out int deleteIdx1) ||
+                        !int.TryParse(deleteIndices[1], out int deleteIdx2))
+                    {
+                        Console.WriteLine("Invalid indices for delete command.");
+                        return null;
+                    }
+                    return new DeleteCommand(editor, deleteIdx1, deleteIdx2);
+
+                case "undo":
+                    return null; // Предполагается, что у вас есть класс UndoCommand
+
+                case "redo":
+                    return null; // Предполагается, что у вас есть класс RedoCommand
+
+                default:
+                    Console.WriteLine($"Unknown command: {commandType}");
+                    break;
             }
-            else if (commandType == "paste")
-            {
-                if (!int.TryParse(parts[1], out int idx))
-                {
-                    throw new ArgumentException("Invalid index for paste command.");
-                }
-                return new PasteCommand(editor, idx);
-            }
-            else if (commandType == "insert")
-            {
-                string text = parts[1].Trim('"');
-                if (parts.Length < 3 || !int.TryParse(parts[2], out int idx))
-                {
-                    throw new ArgumentException("Invalid index for insert command.");
-                }
-                return new InsertCommand(editor, text, idx);
-            }
-            else if (commandType == "delete")
-            {
-                var indices = parts[1].Split(',');
-                if (indices.Length != 2 || !int.TryParse(indices[0], out int idx1) || !int.TryParse(indices[1], out int idx2))
-                {
-                    throw new ArgumentException("Invalid indices for delete command.");
-                }
-                return new DeleteCommand(editor, idx1, idx2);
-            }
-            else if (commandType == "undo")
-            {
-                return null; // специальный случай для undo
-            }
-            else if (commandType == "redo")
-            {
-                return null; // специальный случай для redo
-            }
-            else
-            {
-                throw new ArgumentException($"Unknown command: {commandType}");
-            }
+            return null;
         }
     }
 }
