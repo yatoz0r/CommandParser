@@ -5,8 +5,10 @@ class Program
     static void Main()
     {
         var executor = new CommandExecutor();
-        Console.WriteLine("Напишите строку: ");
-        executor.SetText(Console.ReadLine());
+        var textString = File.ReadAllText("textLine.txt");
+        Console.WriteLine($"Start text: {textString}");
+        /*executor.SetText(Console.ReadLine());*/
+        executor.SetText(textString);
         var fileCommands = File.ReadAllText("commands.txt");
         var commands = fileCommands.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         executor.LoadCommands(commands);
