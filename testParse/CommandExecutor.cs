@@ -1,5 +1,3 @@
-﻿using System.ComponentModel.Design;
-
 namespace testParse
 {
     public class CommandExecutor
