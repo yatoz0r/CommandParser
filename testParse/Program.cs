@@ -9,7 +9,6 @@ class Program
         Console.WriteLine($"Start text: {textString}");
         Console.WriteLine($"Start text: {textString}\n");
         Console.WriteLine($"Start text: {textString}\n");
-        /*executor.SetText(Console.ReadLine());*/
         executor.SetText(textString);
         var fileCommands = File.ReadAllText("commands.txt");
         executor.ExecuteCommand(CommandParser.ParseCommand(executor.Editor, fileCommands));
