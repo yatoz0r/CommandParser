@@ -49,10 +49,9 @@
                     return new DeleteCommand(editor, deleteIdx1 - 1, deleteIdx2 - 1);
 
                 case "undo":
-                    return new UndoCommand(); // Предполагается, что у вас есть класс UndoCommand
-
+                    return new UndoCommand();
                 case "redo":
-                    return new RedoCommand(); // Предполагается, что у вас есть класс RedoCommand
+                    return new RedoCommand();
 
                 default:
                     Console.WriteLine($"Unknown command: {commandType}");
