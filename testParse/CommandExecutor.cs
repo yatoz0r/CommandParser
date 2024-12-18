@@ -1,10 +1,14 @@
-﻿namespace testParse
+﻿using System.ComponentModel.Design;
+
+namespace testParse
 {
     public class CommandExecutor
     {
         private Stack<ICommand> _undoStack;
         private Stack<ICommand> _redoStack;
+        private List<ICommand> _commandHistory;
         private TextEditor _editor;
+        public TextEditor Editor => _editor;
 
         public CommandExecutor()
         {
@@ -13,23 +17,26 @@
             _editor = new TextEditor();
         }
 
-        public void ExecuteCommand(ICommand command)
+        public void ExecuteCommand(List<ICommand> commands)
         {
-            if(command is UndoCommand)
+            foreach (var command in commands)
             {
-                Undo();
+                if (command is UndoCommand)
+                {
+                    Undo();
+                }
+                else if (command is RedoCommand)
+                {
+                    Redo();
+                }
+                else
+                {
+                    command.Execute();
+                    _undoStack.Push(command);
+                    _redoStack.Clear();
+                }
+                DisplayState();
             }
-            else if (command is RedoCommand)
-            {
-                Redo();
-            }
-            else
-            {
-                command.Execute();
-                _undoStack.Push(command);
-                _redoStack.Clear();
-            }
-            DisplayState();
         }
 
         public void Undo()
@@ -59,15 +66,6 @@
             Console.WriteLine($"Undo Stack Count: {_undoStack.Count}");
             Console.WriteLine($"Redo Stack Count: {_redoStack.Count}");
             Console.WriteLine(new string('-', 40));
-        }
-        
-        public void LoadCommands(IEnumerable<string> commandLines)
-        {
-            foreach (var line in commandLines)
-            {
-                var command = CommandParser.ParseCommand(_editor, line);
-                ExecuteCommand(command);
-            }
         }
 
         public void SetText(string text)

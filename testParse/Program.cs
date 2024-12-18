@@ -7,11 +7,9 @@ class Program
         var executor = new CommandExecutor();
         var textString = File.ReadAllText("textLine.txt");
         Console.WriteLine($"Start text: {textString}");
-        /*executor.SetText(Console.ReadLine());*/
         executor.SetText(textString);
         var fileCommands = File.ReadAllText("commands.txt");
-        var commands = fileCommands.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-        executor.LoadCommands(commands);
+        executor.ExecuteCommand(CommandParser.ParseCommand(executor.Editor, fileCommands));
         Console.WriteLine($"Final text: {executor.GetFinalText()}");
     }
 }
