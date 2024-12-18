@@ -6,8 +6,6 @@ class Program
     {
         var executor = new CommandExecutor();
         var textString = File.ReadAllText("textLine.txt");
-        Console.WriteLine($"Start text: {textString}");
-        Console.WriteLine($"Start text: {textString}\n");
         Console.WriteLine($"Start text: {textString}\n");
         executor.SetText(textString);
         var fileCommands = File.ReadAllText("commands.txt");
