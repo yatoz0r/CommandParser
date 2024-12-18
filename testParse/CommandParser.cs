@@ -1,4 +1,4 @@
-﻿namespace testParse
+namespace testParse
 {
     public class CommandParser
     {
@@ -57,17 +57,19 @@
                         commandsList.Add(new DeleteCommand(editor, deleteIdx1 - 1, deleteIdx2 - 1));
                         break;
 
-                case "undo":
-                    return new UndoCommand(); // Предполагается, что у вас есть класс UndoCommand
-
-                case "redo":
-                    return new RedoCommand(); // Предполагается, что у вас есть класс RedoCommand
-
-                default:
-                    Console.WriteLine($"Unknown command: {commandType}");
-                    break;
+                    case "undo":
+                        commandsList.Add(new UndoCommand());
+                        break;
+                    case "redo":
+                        commandsList.Add(new RedoCommand());
+                        break;
+                    default:
+                        Console.WriteLine($"Unknown command: {commandType}");
+                        break;
+                }
+                
             }
-            return null;
+            return commandsList;
         }
     }
 }
