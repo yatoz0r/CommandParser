@@ -2,39 +2,31 @@
 {
     public class TextEditor
     {
-        public string Text { get; set; }
-        public string Buffer { get; set; }
+        private string _text;
+        private string _buffer;
+        public string Text => _text;
+        public string Buffer => _buffer;
 
         public TextEditor()
         {
-            Text = string.Empty;
-            Buffer = string.Empty;
+            _text = string.Empty;
+            _buffer = string.Empty;
         }
 
-        public void SetText(string text)
-        {
-            Text = text;
-        }
+        public void SetText(string text) => _text = text;
 
-        public void Copy(int idx1, int idx2)
-        {
-            Buffer = Text.Substring(idx1, idx2 - idx1);
-        }
+        public void ClearBuffer() => _buffer = string.Empty;
 
-        public void Paste(int idx)
-        {
-            Text = Text.Insert(idx, Buffer);
-        }
+        public void Copy(int idx1, int idx2) => _buffer = _text.Substring(idx1, idx2 - idx1);
+
+        public void Paste(int idx)  => _text = _text.Insert(idx, Buffer);
 
         public void Delete(int idx1, int idx2)
         {
-            var deletedText = Text.Substring(idx1, idx2 - idx1);
-            Text = Text.Remove(idx1, idx2 - idx1);
+            var deletedText = _text.Substring(idx1, idx2 - idx1);
+            _text = _text.Remove(idx1, idx2 - idx1);
         }
 
-        public void Insert(int idx, string text)
-        {
-            Text = Text.Insert(idx, text);
-        }
+        public void Insert(int idx, string text) => _text = _text.Insert(idx, text);
     }
 }

@@ -4,12 +4,13 @@ class Program
 {
     static void Main()
     {
-        var executor = new CommandExecutor();
+        var editor = new TextEditor();
+        var executor = new CommandExecutor(editor);
         var textString = File.ReadAllText("textLine.txt");
         Console.WriteLine($"Start text: {textString}\n");
-        executor.SetText(textString);
+        editor.SetText(textString);
         var fileCommands = File.ReadAllText("commands.txt");
-        executor.ExecuteCommand(CommandParser.ParseCommand(executor.Editor, fileCommands));
+        executor.ExecuteCommand(CommandParser.ParseCommand(editor, fileCommands));
         Console.WriteLine($"Final text: {executor.GetFinalText()}");
     }
 }

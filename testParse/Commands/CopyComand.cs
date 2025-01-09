@@ -20,7 +20,7 @@
 
         public void Undo()
         {
-            _editor.Buffer = string.Empty;
+            _editor.ClearBuffer();
             Console.WriteLine("Undo copy command: buffer cleared.");
         }
 

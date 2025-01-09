@@ -4,15 +4,13 @@ namespace testParse
     {
         private Stack<ICommand> _undoStack;
         private Stack<ICommand> _redoStack;
-        private List<ICommand> _commandHistory;
         private TextEditor _editor;
-        public TextEditor Editor => _editor;
-
-        public CommandExecutor()
+        
+        public CommandExecutor(TextEditor editor)
         {
             _undoStack = new Stack<ICommand>();
             _redoStack = new Stack<ICommand>();
-            _editor = new TextEditor();
+            _editor = editor;
         }
 
         public void ExecuteCommand(List<ICommand> commands)
@@ -64,11 +62,6 @@ namespace testParse
             Console.WriteLine($"Undo Stack Count: {_undoStack.Count}");
             Console.WriteLine($"Redo Stack Count: {_redoStack.Count}");
             Console.WriteLine(new string('-', 40));
-        }
-
-        public void SetText(string text)
-        {
-            _editor.SetText(text);
         }
 
         public string GetFinalText()

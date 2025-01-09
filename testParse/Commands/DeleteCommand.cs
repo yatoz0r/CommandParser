@@ -15,14 +15,14 @@
 
         public void Execute()
         {
-            _deletedText = _editor.Text.Substring(_idx1, _idx2 - _idx1);
+            _deletedText = _editor.Text;
             _editor.Delete(_idx1, _idx2);
             Console.WriteLine($"Deleted: '{_deletedText}'");
         }
 
         public void Undo()
         {
-            _editor.Text = _editor.Text.Insert(_idx1, _deletedText);
+            _editor.SetText(_deletedText);
             Console.WriteLine("Undo delete command");
         }
 
